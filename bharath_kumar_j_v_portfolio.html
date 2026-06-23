@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharath Kumar J.V - Cinematic Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.395.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --bg-slate: #0f172a;
+            --accent-primary: #a7a4a4a6; 
+            --accent-secondary: #6366f1; 
+            --accent-glow: rgba(99, 102, 241, 0.2);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --neon-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+            --transition-smooth: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            scroll-behavior: smooth;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- BACKGROUND CANVAS --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, var(--bg-slate) 0%, var(--bg-deep) 100%);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+        /* --- SCROLL-REVEAL SYSTEM --- */
+        section {
+            padding: 100px 0;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: var(--transition-smooth);
+        }
+
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-heading {
+            position: relative;
+            display: inline-block;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: rgb(219, 212, 212);
+            margin-bottom: 4rem;
+            text-align: center;
+            width: 100%;
+            letter-spacing: -1px;
+        }
+
+        .section-heading span {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.75rem;
+        }
+
+        .section-heading span::after {
+            content: ''; position: absolute; left: 25%; bottom: 0; width: 50%; height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+            box-shadow: 0 0 15px var(--accent-secondary);
+        }
+
+        /* --- GLASSMORPHISM CARDS --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), var(--neon-shadow);
+            transform: translateY(-10px) scale(1.01);
+        }
+
+        /* --- STICKY NAVIGATION BAR --- */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.25rem 0;
+        }
+
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-main); text-decoration: none; }
+        .logo span { color: var(--accent-secondary); text-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
+
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* Rounded header avatar setup */
+        .nav-profile-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-avatar-frame {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            overflow: hidden;
+            background: var(--bg-slate);
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+            position: relative;
+        }
+
+        .header-avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-avatar-frame::before {
+            content: '';
+            position: absolute;
+            top: -100%; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .nav-profile-wrapper:hover .header-avatar-frame {
+            transform: scale(1.1);
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 15px var(--accent-secondary);
+        }
+
+        .nav-profile-wrapper:hover .header-avatar-frame::before {
+            top: 100%;
+        }
+
+        /* Status Dot */
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border: 2px solid var(--bg-deep);
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        /* ---  TEXT AREA --- */
+        #hero {
+            padding: 160px 0; text-align: center;
+            opacity: 1; transform: none; 
+        }
+
+        .hero-content-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero-title { font-size: clamp(3.2rem, 8vw, 5.5rem); font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -2px; line-height: 1.1; }
+        .hero-name { background: linear-gradient(to right, #fff, var(--accent-secondary)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-desc { color: var(--text-muted); font-size: 1.35rem; font-weight: 400; margin-bottom: 2.5rem; }
+        .hero-sub { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 3px; color: var(--accent-secondary); margin-bottom: 1rem; font-weight: 700; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .hero-btn-group { display: flex; gap: 1.5rem; justify-content: center; margin-top: 3.5rem; }
+
+        .hero-btn {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1.25rem 2.5rem; border-radius: 1rem; font-weight: 800; text-decoration: none;
+            transition: var(--transition-smooth); text-transform: uppercase;
+            animation: float 5s ease-in-out infinite;
+            position: relative; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hero-btn.primary { 
+            background: linear-gradient(135deg, var(--accent-secondary), #4f46e5);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            animation-delay: 0.25s;
+        }
+
+        .hero-btn::after {
+            content: ''; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
+            background: rgba(255,255,255,0.15); transform: rotate(35deg); transition: 0.8s;
+        }
+
+        .hero-btn:hover::after { left: 150%; }
+        .hero-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--neon-shadow);
+            border-color: var(--accent-secondary);
+        }
+
+        /* --- GRID & TIMELINE PATTERNS --- */
+        .split-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2.5rem; }
+        
+        .skills-container { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 2rem; 
+        }
+        
+        @media (min-width: 768px) {
+            .skills-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .skill-list { list-style: none; }
+        .skill-list li { color: var(--text-muted); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .skill-list li::before { content: ''; width: 6px; height: 6px; background: var(--accent-secondary); border-radius: 50%; box-shadow: 0 0 8px var(--accent-secondary); }
+
+        .experience-card { border-left: 2px solid var(--accent-secondary); padding-left: 2rem; position: relative; margin-bottom: 2rem; }
+        .experience-meta { color: var(--accent-secondary); font-weight: 700; font-size: 0.85rem; display: block; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Badge groups */
+        .badge-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 1rem 0; }
+        .tech-badge {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .role-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .pdf-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            margin-top: 2rem; padding: 0.9rem 1.8rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem; color: #fff;
+            text-decoration: none; font-size: 0.85rem; font-weight: 800;
+            transition: var(--transition-smooth);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pdf-btn:hover { 
+            background: var(--accent-secondary); 
+            border-color: var(--accent-secondary);
+            box-shadow: var(--neon-shadow);
+            transform: translateX(5px);
+        }
+
+        .contact-info-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            justify-content: center;
+        }
+        .contact-info-block span { display: flex; align-items: center; gap: 8px; }
+
+        /* */
+        /* --- NEW PROFILE MODAL STYLES --- */
+        .profile-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(16px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .profile-modal-overlay.is-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile-modal-card {
+            background: var(--bg-slate);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: var(--transition-smooth);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), var(--neon-shadow);
+            text-align: center;
+        }
+
+        .profile-modal-overlay.is-active .profile-modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.25rem; right: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: rotate(90deg);
+        }
+
+        /* Holographic Portrait inside Modal */
+        .modal-portrait-container {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: modalFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes modalFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .modal-portrait-wrapper {
+            width: 100%; height: 100%;
+            border-radius: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .modal-portrait-image {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-corner-bracket {
+            position: absolute;
+            width: 16px; height: 16px;
+            border-color: var(--accent-secondary);
+            border-style: solid;
+            pointer-events: none;
+            filter: drop-shadow(0 0 5px var(--accent-secondary));
+        }
+
+        .mcb-tl { top: -4px; left: -4px; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+        .mcb-tr { top: -4px; right: -4px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+        .mcb-bl { bottom: -4px; left: -4px; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+        .mcb-br { bottom: -4px; right: -4px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+
+        .modal-scanner-beam {
+            position: absolute;
+            left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
+            box-shadow: 0 0 10px var(--accent-secondary);
+            pointer-events: none;
+            animation: modalScan 3.5s linear infinite;
+        }
+
+        @keyframes modalScan {
+            0% { top: 0%; opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .modal-contact-details {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            padding: 1.25rem;
+            border-radius: 1rem;
+        }
+
+        .modal-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .modal-contact-item i {
+            color: var(--accent-secondary);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .split-grid { grid-template-columns: 1fr; }
+            section { padding: 60px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <div class="container nav-inner">
+            <a href="#hero" class="logo">Bharath <span>Kumar</span></a>
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#education">Education</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Project</a>
+                <!-- Rounded status profile icon at top right -->
+                <div class="nav-profile-wrapper" id="profile-trigger" style="cursor: pointer;" title="View Contact & Portrait">
+                    <div class="header-avatar-frame">
+                        <img src="bharath.jpg" alt="Bharath Profile Icon" onerror="this.src='bharath.jpg'">
+                    </div>
+                    <div class="status-dot" title="Available for Opportunities"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. HERO -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content-wrapper">
+                    <div class="hero-sub">Software Developer | UI/UX Designer | AI Enthusiast </div>
+                    <h1 class="hero-title">Hi, I'm <span class="hero-name">Bharath Kumar J.V</span></h1>
+                    <p class="hero-desc">Computer Science graduate specializing in full-stack engineering and intelligent search . Passionate about translating rich design architecture into fast, clean, and highly functional digital tools </p>
+                    
+                    <div class="contact-info-block">
+                        <span><i data-lucide="map-pin" size="16"></i> Coimbatore, India </span>
+                        <span><i data-lucide="mail" size="16"></i> bharathkumarjvofficial@gmail.com</span>
+                        <span><i data-lucide="phone" size="16"></i> +91 9894966115 </span>
+                    </div>
+
+                    <div class="hero-btn-group">
+                        <a href="#projects" class="hero-btn primary">
+                            <i data-lucide="cpu"></i> Explore Final Project
+                        </a>
+                        <a href="Bharathkumar_resume.pdf" download class="hero-btn">
+                            <i data-lucide="file-down"></i> Download Resume
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT -->
+        <section id="about" class="container">
+            <h2 class="section-heading"><span>About Me</span></h2>
+            <div class="glass-card">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-main);">
+                    Motivated Computer Science graduate with hands-on experience in full-stack development using Python, FastAPI, React, and MongoDB . I recently designed and built a highly secure, AI-powered clinical report system implementing advanced RAG pipelines and custom role-based access architectures . Utilizing tools like Figma for deep wireframing and Adobe After Effects for interactive UI motion design, I aim to merge engineering precision with outstanding design fidelity .
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. EXPERIENCE -->
+        <section id="experience" class="container">
+            <h2 class="section-heading"><span>Professional Experience</span></h2>
+            <div class="glass-card">
+                <div class="experience-card" style="margin-bottom: 0;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;">App Developer Intern</h3>
+                    <span class="experience-meta">Bhogan Mediasoft | June 2025 – August 2025 </span>
+                    <ul class="skill-list" style="margin-top: 1rem;">
+                        <li style="color: var(--text-main);">Developed and deployed user-focused mobile applications, improving user engagement by 95% through performance optimizations and intuitive UX flow .</li>
+                        <li style="color: var(--text-main);">Redesigned the application UI in Figma, resulting in a cleaner interface, smoother navigation, and reduced user drop-off .</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. EDUCATION -->
+        <section id="education" class="container">
+            <h2 class="section-heading"><span>Education</span></h2>
+            <div class="split-grid">
+                <div class="glass-card">
+                    <div class="experience-card" style="margin: 0;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700;">B.E. Computer Science & Engineering</h3>
+                        <span class="experience-meta">Info Institute of Engineering, Coimbatore | 2022 – 2026 </span>
+                        <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">Focusing on core areas: Data Structures, Algorithms, DBMS, Operating Systems, Software Engineering, and specialized UI/UX Design</p>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="experience-card" style="margin: 0;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700;">Higher Secondary Certificate</h3>
+                        <span class="experience-meta">Govt Higher Secondary School, Mettupalayam | 2021 – 2022</span>
+                        <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.95rem;">Computer Science Group. Developed solid core bases in computational thinking and computational mathematics .</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TECHNICAL & SOFT SKILLS -->
+        <section id="skills" class="container">
+            <h2 class="section-heading"><span>Technical & Soft Skills</span></h2>
+            <div class="skills-container">
+                <div class="glass-card">
+                    <h4 style="margin-bottom:1.5rem; display: flex; align-items: center; gap: 10px; color: var(--text-main);"><i data-lucide="code" color="#6366f1"></i> Languages & Frameworks</h4>
+                    <div class="badge-container">
+                        <span class="tech-badge">Python </span>
+                        <span class="tech-badge">JavaScript </span>
+                        <span class="tech-badge">C++ </span>
+                        <span class="tech-badge">HTML5 </span>
+                        <span class="tech-badge">CSS3 </span>
+                        <span class="tech-badge">React </span>
+                        <span class="tech-badge">Vite </span>
+                        <span class="tech-badge">FastAPI </span>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h4 style="margin-bottom:1.5rem; display: flex; align-items: center; gap: 10px; color: var(--text-main);"><i data-lucide="database" color="#6366f1"></i> Databases & Intelligent AI</h4>
+                    <div class="badge-container">
+                        <span class="tech-badge">MongoDB </span>
+                        <span class="tech-badge">ChromaDB </span>
+                        <span class="tech-badge">RAG Architecture </span>
+                        <span class="tech-badge">LLaMA 3.3 (Groq API) </span>
+                        <span class="tech-badge">NumPy </span>
+                        <span class="tech-badge">Sentence Transformers </span>
+                        <span class="tech-badge">JWT Authentication </span>
+                        <span class="tech-badge">REST APIs </span>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h4 style="margin-bottom:1.5rem; display: flex; align-items: center; gap: 10px; color: var(--text-main);"><i data-lucide="palette" color="#6366f1"></i> Design & Dev Tools</h4>
+                    <div class="badge-container">
+                        <span class="tech-badge">Figma (UI/UX) </span>
+                        <span class="tech-badge">Adobe After Effects </span>
+                        <span class="tech-badge">Git & GitHub </span>
+                        <span class="tech-badge">VS Code </span>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h4 style="margin-bottom:1.5rem; display: flex; align-items: center; gap: 10px; color: var(--text-main);"><i data-lucide="smile" color="#6366f1"></i> Soft Skills & Languages</h4>
+                    <ul class="skill-list" style="font-size: 0.9rem;">
+                        <li>Quick Learner </li>
+                        <li>Good Communication </li>
+                        <li>Problem Solving </li>
+                        <li>Team Work </li>
+                        <li style="border-top: 1px solid var(--glass-border); padding-top: 8px; margin-top: 8px;">English (Proficient)</li>
+                        <li>Tamil (Fluent)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. FINAL YEAR PROJECT -->
+        <section id="projects" class="container">
+            <h2 class="section-heading"><span>Final Year Project</span></h2>
+            <div class="glass-card" style="border-left: 4px solid var(--accent-secondary);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <span class="experience-meta" style="margin-bottom: 0.5rem;">Core AI/ML Research Project | Feb 2026 </span>
+                        <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; line-height: 1.3;">Secure Healthcare Data Retrieval & Clinical Report Generation using RAG </h3>
+                    </div>
+                </div>
+
+                <div class="badge-container" style="margin: 1.5rem 0 1rem 0;">
+                    <span class="tech-badge">Python </span>
+                    <span class="tech-badge">FastAPI </span>
+                    <span class="tech-badge">React </span>
+                    <span class="tech-badge">MongoDB </span>
+                    <span class="tech-badge">ChromaDB </span>
+                    <span class="tech-badge">LLaMA 3.3 </span>
+                    <span class="tech-badge">Groq API </span>
+                    <span class="tech-badge">JWT </span>
+                </div>
+
+                <p style="color: var(--text-muted); margin: 1.5rem 0; font-size: 1.05rem;">
+                    Engineered a fully HIPAA-compliant, role-based medical document management pipeline utilizing deep vector space matching and modern large language models.
+                </p>
+
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-secondary); margin-bottom: 0.75rem;">Interactive Roles Supported (RBAC) </h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem;">
+                        <span class="role-badge">🔑 Admin </span>
+                        <span class="role-badge">🩺 Doctor </span>
+                        <span class="role-badge">🩹 Patient </span>
+                        <span class="role-badge">🔬 Lab Technician </span>
+                        <span class="role-badge">📋 Receptionist </span>
+                    </div>
+                </div>
+
+                <ul class="skill-list" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <li style="color: var(--text-main); align-items: flex-start;">
+                        <span>Built a full-stack healthcare system securing data across five distinct user authorization roles </span>
+                    </li>
+                    <li style="color: var(--text-main); align-items: flex-start;">
+                        <span>Implemented an advanced hybrid retrieval engine pairing Sentence Transformers for context searches alongside vector distance checks in ChromaDB </span>
+                    </li>
+                    <li style="color: var(--text-main); align-items: flex-start;">
+                        <span>Integrated LLaMA 3.3-70B model via Groq API, leveraging grounded context injections to eliminate LLM output hallucinations during clinical summarizations </span>
+                    </li>
+                    <li style="color: var(--text-main); align-items: flex-start;">
+                        <span>Guarded medical databases through JWT authentication models, secure logging audits, and encrypted transactional pathways </span>
+                    </li>
+                </ul>
+
+                <a href="Final_year_Project.pdf" target="_blank" class="pdf-btn">
+                    <i data-lucide="file-text"></i> Project PDF Documentation
+                </a>
+            </div>
+        </section>
+
+        <!-- 7. ACTIVITIES & CERTIFICATIONS -->
+        <section id="activities" class="container"
+            <div class="split-grid">
+                <div class="glass-card">
+                    <h4 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;"><i data-lucide="award" color="#6366f1"></i> Certifications</h4>
+                    <ul class="skill-list">
+                        <li style="color: var(--text-main);">Full Stack Web Development — Value-Added Course, certified by Info Institute of Engineering (2024).</li>
+                    </ul>
+                </div>
+                <div class="glass-card">
+                    <h4 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;"><i data-lucide="sparkles" color="#6366f1"></i> Leadership & Activities</h4>
+                    <ul class="skill-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li style="color: var(--text-main);"><strong>Publisher</strong> — Info Saga (College Magazine / Publication)</li>
+                        <li style="color: var(--text-main);"><strong>Public Image Chair</strong> — Rotaract Club of Info Institute of Engineering (Rotary Year 2024–2025)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- -->
+    <!-- --- HOLOGRAPHIC PROFILE MODAL --- -->
+    <div class="profile-modal-overlay" id="profile-modal">
+        <div class="profile-modal-card">
+            <button class="modal-close-btn" id="modal-close" aria-label="Close modal">
+                <i data-lucide="x" size="18"></i>
+            </button>
+            
+            <!-- Holographic Scanner Portrait -->
+            <div class="modal-portrait-container">
+                <div class="modal-corner-bracket mcb-tl"></div>
+                <div class="modal-corner-bracket mcb-tr"></div>
+                <div class="modal-corner-bracket mcb-bl"></div>
+                <div class="modal-corner-bracket mcb-br"></div>
+                <div class="modal-scanner-beam"></div>
+                <div class="modal-portrait-wrapper">
+                    <img src="bharath.jpg" alt="Bharath Kumar J.V" class="modal-portrait-image">
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem;">Bharath Kumar J.V</h3>
+            <p style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-secondary); margin-bottom: 1rem; font-weight: 700;">Software Developer</p>
+
+            <!-- Contact Details -->
+            <div class="modal-contact-details">
+                <div class="modal-contact-item">
+                    <i data-lucide="phone" size="16"></i>
+                    <span>+91 9894966115</span>
+                </div>
+                <div class="modal-contact-item">
+                    <i data-lucide="mail" size="16"></i>
+                    <span>bharathkumarjvofficial@gmail.com</span>
+                </div>
+                <div class="modal-contact-item">
+                    <i data-lucide="map-pin" size="16"></i>
+                    <span>Mettupalayam, Coimbatore, India</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="padding: 5rem 0; text-align: center; border-top: 1px solid var(--glass-border);">
+        <div class="container">
+            <p style="color: var(--text-main); font-weight: 700; margin-bottom: 0.5rem;">BHARATH KUMAR J.V</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Mettupalayam, Coimbatore, India</p>
+            <div style="display: flex; justify-content: center; gap: 2.5rem; margin-top: 2rem;">
+                <a href="https://linkedin.com/in/bharath-kumar-j-v-161086296" target="_blank" style="color: var(--text-muted); text-decoration:none; display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="linkedin" size="18"></i> LinkedIn
+                </a>
+                <a href="mailto:bharathkumarjvofficial@gmail.com" style="color: var(--text-muted); text-decoration:none; display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="mail" size="18"></i> Email
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Reveal Animation Logic
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('is-visible');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('section').forEach(section => revealObserver.observe(section));
+
+        /* */
+        // --- PROFILE MODAL INTERACTION LOGIC ---
+        const profileTrigger = document.getElementById('profile-trigger');
+        const profileModal = document.getElementById('profile-modal');
+        const modalClose = document.getElementById('modal-close');
+
+        if (profileTrigger && profileModal && modalClose) {
+            profileTrigger.addEventListener('click', () => {
+                profileModal.classList.add('is-active');
+            });
+
+            modalClose.addEventListener('click', () => {
+                profileModal.classList.remove('is-active');
+            });
+
+            // Close when clicking overlay backdrop
+            profileModal.addEventListener('click', (e) => {
+                if (e.target === profileModal) {
+                    profileModal.classList.remove('is-active');
+                }
+            });
+        }
+
+        // Background Animation Script (Interactive Neural Particles)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(167, 164, 164, 0.35)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            const particleCount = (canvas.width * canvas.height) / 14000;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function connectParticles() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 140) {
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.12 - distance/140})`;
+                        ctx.lineWidth = 0.85;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            initCanvas();
+            particles = [];
+            createParticles();
+        });
+
+        initCanvas();
+        createParticles();
+        animate();
+    </script>
+</body>
+</html>
